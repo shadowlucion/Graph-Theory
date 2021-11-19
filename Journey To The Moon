@@ -1,0 +1,99 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+sys.setrecursionlimit(5000)
+
+
+
+
+
+
+
+
+#Main Code
+def journeyToMoon(n, edge):
+    graph = {}
+    for i in range(n):
+        graph[i] = []
+    for u,v in edge:
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    ans = []
+    visited = set()
+    
+    def dfs(node):
+        visited.add(node)
+        c = 1 
+        for child in graph[node]:
+            if child not in visited:
+                c+= dfs(child)
+        return c 
+    
+    
+    for i in range(n):
+        if i not in visited:
+            ans.append(dfs(i)) 
+            
+    newans =  0  
+    sm = ans[0]
+    
+    for i in range(1,len(ans)):
+        cur = ans[i]
+        newans = newans+ sm*cur 
+        sm += cur
+    
+
+    return newans
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    first_multiple_input = input().rstrip().split()
+
+    n = int(first_multiple_input[0])
+
+    p = int(first_multiple_input[1])
+
+    astronaut = []
+
+    for _ in range(p):
+        astronaut.append(list(map(int, input().rstrip().split())))
+
+    result = journeyToMoon(n, astronaut)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
